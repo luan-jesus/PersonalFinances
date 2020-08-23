@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 
 /** Internal modules **/
-// const parcelaController = require("./Controllers/parcelaController");
+const categoriaController = require("./controllers/categoriaController");
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 /** Express routing **/
-// app.use("/", parcelaController);
+app.use("/categoria", categoriaController);
 
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
