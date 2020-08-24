@@ -2,7 +2,7 @@
 const express = require("express");
 
 /** Internal Modules **/
-const { categoria } = require("../models");
+const { categoria, subcategoria } = require("../models");
 
 const router = express.Router();
 
@@ -10,17 +10,20 @@ const router = express.Router();
  * GET
  */
 
-/** Selecionar todas categorias **/
+/** Selecionar todas subcategorias **/
 router.get("/", async (req, res) => {
   try {
-    const categoriasToReturn = await categoria.findAll();
-    res.status(200).send(categoriasToReturn);
+    // const subCategoriasToReturn = await sub_categoria.findAll({
+    //   attributes: ['id', 'nome', 'createdAt', 'updatedAt'],
+    // });
+    const subCategoriasToReturn = await subcategoria.findAll();
+    res.status(200).send(subCategoriasToReturn);
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
 });
 
-/** Selecionar categoria por id **/
+/** Selecionar subcategoria por id **/
 router.get("/:categoriaId", async (req, res) => {
   const { categoriaId } = req.params;
 
@@ -38,7 +41,7 @@ router.get("/:categoriaId", async (req, res) => {
  * POST
  */
 
-/** Cadastrar nova categoria **/
+/** Cadastrar nova subcategoria **/
 router.post("/", async (req, res) => {
   const { nome } = req.body;
   if (!nome) {
@@ -56,7 +59,7 @@ router.post("/", async (req, res) => {
  * PUT
  */
 
-/** Editar categoria **/
+/** Editar subcategoria **/
 router.put("/", async (req, res) => {
   const { id, nome } = req.body;
 
@@ -91,7 +94,7 @@ router.put("/", async (req, res) => {
  * DELETE
  */
 
-/** Excluir categoria **/
+/** Excluir subcategoria **/
 router.delete("/", async (req, res) => {
   const { id } = req.body;
 

@@ -1,10 +1,13 @@
 /** External Modules **/
 const express = require("express");
-const dotenv = require('dotenv');
-const cors = require('cors');
+const dotenv = require("dotenv");
+const cors = require("cors");
 
 /** Internal modules **/
-const categoriaController = require("./controllers/categoriaController");
+const {
+  categoriaController,
+  subCategoriaController,
+} = require("./controllers");
 
 dotenv.config();
 
@@ -15,10 +18,12 @@ app.use(express.json());
 
 /** Express routing **/
 app.use("/categoria", categoriaController);
+app.use("/subcategoria", subCategoriaController);
 
 const PORT = process.env.PORT || 5000;
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const NODE_ENV = process.env.NODE_ENV || "development";
 
 /** Server deployment **/
-app.listen(PORT, () => console.log(`Server is running in ${NODE_ENV} environment, on PORT ${PORT}`));
-
+app.listen(PORT, () =>
+  console.log(`Server is running in ${NODE_ENV} environment, on PORT ${PORT}`)
+);

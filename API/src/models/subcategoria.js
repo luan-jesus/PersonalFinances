@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       sub_categoria.belongsTo(models.categoria);
-      sub_categoria.hasMany(models.movimentacao);
+      // sub_categoria.hasMany(models.movimentacao);
     }
   }
   sub_categoria.init(
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "sub_categoria",
+      modelName: "subcategoria",
     }
   );
   return sub_categoria;
