@@ -13,25 +13,22 @@ const router = express.Router();
 /** Selecionar todas subcategorias **/
 router.get("/", async (req, res) => {
   try {
-    // const subCategoriasToReturn = await sub_categoria.findAll({
-    //   attributes: ['id', 'nome', 'createdAt', 'updatedAt'],
-    // });
-    const subCategoriasToReturn = await subcategoria.findAll();
-    res.status(200).send(subCategoriasToReturn);
+    const subcategoriasToReturn = await subcategoria.findAll();
+    res.status(200).send(subcategoriasToReturn);
   } catch (error) {
     res.status(500).json({ error: error.toString() });
   }
 });
 
 /** Selecionar subcategoria por id **/
-router.get("/:categoriaId", async (req, res) => {
-  const { categoriaId } = req.params;
+router.get("/:subcategoriaId", async (req, res) => {
+  const { subcategoriaId } = req.params;
 
   try {
-    const categoriaToReturn = await categoria.findOne({
-      where: { id: categoriaId },
+    const subcategoriaToReturn = await subcategoria.findOne({
+      where: { id: subcategoriaId },
     });
-    return res.status(200).send(categoriaToReturn);
+    return res.status(200).send(subcategoriaToReturn);
   } catch (error) {
     return res.status(500).json({ error: error.toString() });
   }
@@ -43,12 +40,21 @@ router.get("/:categoriaId", async (req, res) => {
 
 /** Cadastrar nova subcategoria **/
 router.post("/", async (req, res) => {
-  const { nome } = req.body;
-  if (!nome) {
-    return res.status(400).send({ error: "Nome é obrigatório" });
-  }
+  const { nome, categoriaId } = req.body;
+
+  if (!nome) return res.status(400).send({ error: "Nome é obrigatório" });
+  if (!categoriaId)
+    return res.status(400).send({ error: "categoriaId é obrigatório" });
+
   try {
-    await categoria.create({ nome });
+    const categoriaReferencia = await categoria.findOne({
+      where: { id: categoriaId },
+    });
+
+    if (!categoriaReferencia)
+      return res.status(404).send({ error: "Categoria inexistente" });
+
+    await subcategoria.create({ categoriaId: categoriaId, nome });
     return res.status(201).send();
   } catch (error) {
     return res.status(500).json({ error: error.toString() });
@@ -61,28 +67,38 @@ router.post("/", async (req, res) => {
 
 /** Editar subcategoria **/
 router.put("/", async (req, res) => {
-  const { id, nome } = req.body;
-
-  if (!nome) return res.status(400).send({ error: "Nome é obrigatório" });
+  const { id, nome, categoriaId } = req.body;
 
   if (!id) return res.status(400).send({ error: "Id é obrigatório" });
 
   try {
-    const categoriaUpdate = await categoria.findOne({ where: { id } });
+    const subcategoriaUpdate = await subcategoria.findOne({
+      attributes: ["nome", "categoriaId"],
+      where: { id },
+    });
+    const novaCategoria = await categoria.findOne({
+      where: { id: categoriaId },
+    });
 
-    if (!categoriaUpdate)
+    if (!subcategoriaUpdate)
       return res
         .status(400)
-        .send({ error: `Categoria de id=${id} inexistente` });
+        .send({ error: `Subcategoria de id=${id} inexistente` });
 
-    await categoria.update(
-      {
-        nome,
-      },
-      {
-        where: { id },
-      }
-    );
+    if (!novaCategoria)
+      return res
+        .status(400)
+        .send({ error: `Categoria de id=${categoriaId} inexistente` });
+
+    var subcategoriaAtualizada = subcategoriaUpdate.dataValues;
+
+    if (nome) subcategoriaAtualizada.nome = nome;
+
+    if (categoriaId) subcategoriaAtualizada.categoriaId = categoriaId;
+
+    await subcategoria.update(subcategoriaAtualizada, {
+      where: { id },
+    });
 
     return res.status(200).send();
   } catch (error) {
@@ -101,14 +117,14 @@ router.delete("/", async (req, res) => {
   if (!id) return res.status(400).send({ error: "Id é obrigatório" });
 
   try {
-    const categoriaExcluir = await categoria.findOne({ where: { id } });
+    const subcategoriaExcluir = await subcategoria.findOne({ where: { id } });
 
-    if (!categoriaExcluir)
+    if (!subcategoriaExcluir)
       return res
         .status(400)
-        .send({ error: `Categoria de id=${id} inexistente` });
+        .send({ error: `Subcategoria de id=${id} inexistente` });
 
-    await categoriaExcluir.destroy();
+    await subcategoriaExcluir.destroy();
 
     return res.status(200).send();
   } catch (error) {

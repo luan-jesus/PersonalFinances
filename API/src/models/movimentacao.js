@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   movimentacao.init(
     {
-      sub_categoria_id: DataTypes.INTEGER,
+      subcategoriaId: DataTypes.INTEGER,
       desc: DataTypes.STRING,
       valor: DataTypes.DECIMAL,
-      tipo_mov: DataTypes.INTEGER,
+      tipo_movId: DataTypes.INTEGER,
     },
     {
       sequelize,

@@ -15,12 +15,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   sub_categoria.init(
     {
-      categoria_id: DataTypes.INTEGER,
+      categoriaId: DataTypes.INTEGER,
       nome: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: "subcategoria",
+      name: {
+        plural: 'subcategorias',
+        singular: 'subcategoria'
+      }
     }
   );
   return sub_categoria;

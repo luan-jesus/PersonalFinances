@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      categoria.hasMany(models.subcategoria);
+      // categoria.hasMany(models.subcategoria);
     }
   }
   categoria.init(
@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "categoria",
+      name: {
+        plural: 'categorias',
+        singular: 'categoria'
+      }
     }
   );
   return categoria;

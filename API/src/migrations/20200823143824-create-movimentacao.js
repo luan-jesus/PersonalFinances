@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      sub_categoria_id: {
+      subcategoriaId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'subcategoria',
@@ -23,7 +23,7 @@ module.exports = {
       valor: {
         type: Sequelize.DECIMAL
       },
-      tipo_mov: {
+      tipo_movId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'tipos_mov',
