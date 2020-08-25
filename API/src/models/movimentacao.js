@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      movimentacao.belongsTo(models.tipos_mov);
+      movimentacao.belongsTo(models.tipos_mov, {foreignKey: 'tipo_movId'});
       movimentacao.belongsTo(models.subcategoria);
     }
   }
@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "movimentacao",
+      freezeTableName: true,
     }
   );
   return movimentacao;

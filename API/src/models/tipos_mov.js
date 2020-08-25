@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      tipos_mov.hasMany(models.movimentacao);
+      // tipos_mov.hasMany(models.movimentacao);
     }
   }
   tipos_mov.init(
@@ -19,7 +19,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "tipos_mov",
-      freezeTableName: true
+      freezeTableName: true,
+      name: {
+        plural: 'tipos_mov',
+        singular: 'tipos_mov'
+      }
     }
   );
   return tipos_mov;

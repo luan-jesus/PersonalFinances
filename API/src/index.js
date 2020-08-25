@@ -7,6 +7,7 @@ const cors = require("cors");
 const {
   categoriaController,
   subCategoriaController,
+  movimentacaoController,
 } = require("./controllers");
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(express.json());
 /** Express routing **/
 app.use("/categoria", categoriaController);
 app.use("/subcategoria", subCategoriaController);
+app.use("/movimentacao", movimentacaoController);
 
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || "development";
