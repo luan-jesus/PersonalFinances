@@ -1,4 +1,4 @@
-crud Categoria	
-crud Sub Categoria	
-crud Movimentação
-rota global pa ver tudo (igual na planilha)
+crud Categoria..................................... ok
+crud Sub Categoria................................. ok
+crud Movimentação.................................. ok
+rota global pa ver tudo (igual na planilha)........

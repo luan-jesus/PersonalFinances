@@ -8,6 +8,7 @@ const {
   categoriaController,
   subCategoriaController,
   movimentacaoController,
+  principalController
 } = require("./controllers");
 
 dotenv.config();
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 /** Express routing **/
+app.use("/", principalController);
 app.use("/categoria", categoriaController);
 app.use("/subcategoria", subCategoriaController);
 app.use("/movimentacao", movimentacaoController);

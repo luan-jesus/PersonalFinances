@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "movimentacao",
       freezeTableName: true,
+      name: {
+        plural: 'movimentacoes',
+        singular: 'movimentacao'
+      }
     }
   );
   return movimentacao;
