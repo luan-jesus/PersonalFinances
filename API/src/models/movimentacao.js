@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       subcategoriaId: DataTypes.INTEGER,
       desc: DataTypes.STRING,
       valor: DataTypes.DECIMAL,
+      data: DataTypes.DATE,
       tipo_movId: DataTypes.INTEGER,
     },
     {

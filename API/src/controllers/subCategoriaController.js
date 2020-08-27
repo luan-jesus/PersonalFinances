@@ -76,19 +76,21 @@ router.put("/", async (req, res) => {
       attributes: ["nome", "categoriaId"],
       where: { id },
     });
-    const novaCategoria = await categoria.findOne({
-      where: { id: categoriaId },
-    });
 
+    if (categoriaId) {
+      const novaCategoria = await categoria.findOne({
+        where: { id: categoriaId },
+      });
+      
+      if (!novaCategoria)
+      return res
+        .status(400)
+        .send({ error: `Categoria de id=${categoriaId} inexistente` });
+    }
     if (!subcategoriaUpdate)
       return res
         .status(400)
         .send({ error: `Subcategoria de id=${id} inexistente` });
-
-    if (!novaCategoria)
-      return res
-        .status(400)
-        .send({ error: `Categoria de id=${categoriaId} inexistente` });
 
     var subcategoriaAtualizada = subcategoriaUpdate.dataValues;
 

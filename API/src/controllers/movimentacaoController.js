@@ -30,7 +30,7 @@ router.get("/:subcategoriaId", async (req, res) => {
 
 /** Cadastrar nova movimentação **/
 router.post("/", async (req, res) => {
-  const { subcategoriaId, desc, valor, tipo_movId } = req.body;
+  const { subcategoriaId, desc, valor, data, tipo_movId } = req.body;
 
   if (!subcategoriaId)
     return res.status(400).send({ error: "SubcategoriaId é obrigatório" });
@@ -38,6 +38,8 @@ router.post("/", async (req, res) => {
     return res.status(400).send({ error: "Desc é obrigatório" });
   if (!valor)
     return res.status(400).send({ error: "Valor é obrigatório" });
+  if (!data)
+    return res.status(400).send({ error: "Data é obrigatória" });
   if (!tipo_movId)
     return res.status(400).send({ error: "Tipo_movId é obrigatório" });
 
@@ -59,6 +61,7 @@ router.post("/", async (req, res) => {
       subcategoriaId,
       desc,
       valor,
+      data,
       tipo_movId,
     });
     return res.status(201).send();
@@ -73,14 +76,14 @@ router.post("/", async (req, res) => {
 
 /** Editar subcategoria **/
 router.put("/", async (req, res) => {
-  const { id, subcategoriaId, desc, valor, tipo_movId } = req.body;
+  const { id, subcategoriaId, desc, valor, data, tipo_movId } = req.body;
 
   if (!id)
     return res.status(400).send({ error: "Id é obrigatório" });
 
   try {
     const movimentacaoUpdate = await movimentacao.findOne({
-      attributes: ["subcategoriaId", "desc", "valor", "tipo_movId"],
+      attributes: ["subcategoriaId", "desc", "valor", "tipo_movId", "data"],
       where: { id },
     });
     const novaSubcategoria = await subcategoria.findOne({
@@ -111,6 +114,7 @@ router.put("/", async (req, res) => {
     if (desc) movimentacaoAtualizada.desc = desc;
     if (valor) movimentacaoAtualizada.valor = valor;
     if (tipo_movId) movimentacaoAtualizada.tipo_movId = tipo_movId;
+    if (data) movimentacaoAtualizada.data = data;
 
     await movimentacao.update(movimentacaoAtualizada, {
       where: { id },

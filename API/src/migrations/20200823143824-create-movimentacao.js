@@ -18,10 +18,16 @@ module.exports = {
         onDelete: 'SET NULL'
       },
       desc: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       valor: {
+        allowNull: false,
         type: Sequelize.DECIMAL
+      },
+      data: {
+        allowNull: false,
+        type: Sequelize.DATE
       },
       tipo_movId: {
         type: Sequelize.INTEGER,
