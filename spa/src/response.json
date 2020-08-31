@@ -7,7 +7,7 @@
     },
     "movimentos": [
         {
-            "tipoMovimento": "entrada",
+            "tipoMovimento": "Entradas",
             "categorias": [
                 {
                     "categoria": "Receitas",
@@ -86,7 +86,7 @@
             ]
         },
         {
-            "tipoMovimento": "investimento",
+            "tipoMovimento": "Investimentos",
             "categorias": [
                 {
                     "categoria": "Investimentos",
@@ -129,7 +129,7 @@
             ]
         },
         {
-            "tipoMovimento": "saída",
+            "tipoMovimento": "Saídas",
             "categorias": [
                 {
                     "categoria": "Fixas",

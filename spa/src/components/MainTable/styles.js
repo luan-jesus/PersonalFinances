@@ -61,9 +61,11 @@ export const ValorLabel = styled.div`
 `;
 
 export const Category = styled.div`
-  background-color: #333399;
-  width: 70%;
-  font-size: 22px;
+  background-color: #3d3d3d;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  width: 50%;
+  font-size: 17px;
   display: flex;
   align-items: center;
   padding-left: 10px;
@@ -77,6 +79,7 @@ export const CategoryContainer = styled.div`
 
 export const SubcategoryContainer = styled.div`
   flex: 1;
+  width: 50%;
 `;
 
 export const Subcategory = styled.div`
