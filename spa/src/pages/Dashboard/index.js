@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import { Container } from './styles';
+import { Container, Title } from "./styles";
+
+import MainTable from "../../components/MainTable";
 
 function Dashboard() {
   return (
     <Container>
-      <div>Eaei</div>
+      <Title>Dashboard</Title>
+      <MainTable />
     </Container>
   );
 }

@@ -1,0 +1,29 @@
+$sidebar-bg-color: #333399 !default;
+$sidebar-color: #fff !default;
+$sidebar-width: 270px !default;
+$sidebar-collapsed-width: 80px !default;
+$highlight-color: #d8d8d8 !default;
+$submenu-bg-color: #26266d !default;
+$submenu-bg-color-collapsed: #26266d !default;
+$icon-bg-color: #333399 !default;
+$icon-size: 35px !default;
+$breakpoint-xs: 480px !default;
+$breakpoint-sm: 576px !default;
+$breakpoint-md: 768px !default;
+$breakpoint-lg: 992px !default;
+$breakpoint-xl: 1200px !default;
+
+.sidebar-btn-wrapper{
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar-btn{
+  text-align: center;
+  color: #fff;
+  text-decoration: none;
+  &:hover {
+    color: #adadf7;
+  }
+}
+@import '~react-pro-sidebar/dist/scss/styles.scss';
