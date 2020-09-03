@@ -1,13 +1,13 @@
 {
-    "totalAnual": {
-        "entradas": "5115",
-        "investimentos": "2500",
-        "saidas": "2225.33",
-        "saldo": "389.67"
-    },
+    "totalAnual": [
+        {"nome": "Entradas", "valor": "5115"},
+        {"nome": "Investimentos", "valor": "2500"},
+        {"nome": "Saídas", "valor": "2225.33"},
+        {"nome": "Saldo", "valor": "389.67"}
+    ],
     "movimentos": [
         {
-            "tipoMovimento": "entrada",
+            "tipoMovimento": "Entrada",
             "categorias": [
                 {
                     "categoria": "Receitas",
@@ -86,7 +86,7 @@
             ]
         },
         {
-            "tipoMovimento": "investimento",
+            "tipoMovimento": "Investimento",
             "categorias": [
                 {
                     "categoria": "Investimentos",
@@ -129,7 +129,7 @@
             ]
         },
         {
-            "tipoMovimento": "saída",
+            "tipoMovimento": "Saída",
             "categorias": [
                 {
                     "categoria": "Fixas",

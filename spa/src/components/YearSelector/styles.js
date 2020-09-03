@@ -10,7 +10,7 @@ export const Container = styled.div`
 
 export const Arrow = styled.div`
   padding: 5px 10px;
-  background-color: #000;
+  background-color: #3d3d3d;
   display: flex;
   flex-direction: row;
   justify-content: center;

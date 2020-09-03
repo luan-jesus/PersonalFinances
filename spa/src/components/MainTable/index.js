@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-
-import api from "../../services/api";
+import React from "react";
 
 import {
   Container,
@@ -20,25 +18,8 @@ import {
   Hr,
 } from "./styles";
 
-function MainTable() {
-  // const { movimentos, totalAnual } = require("../../response.json");
+function MainTable({movimentos, reload = () => {}}) {
   // const movimentos = undefined;
-  const [movimentos, setMovimentos] = useState([]);
-
-  console.log(movimentos);
-
-  useEffect(() => {
-    getResponse();
-  }, []);
-
-  const getResponse = async () => {
-    // alert("get response");
-    await api.post("/dashboard", { ano: 2020 })
-      .then(response => {
-        console.log(response.data)
-        setMovimentos(response.data.movimentos)
-      })
-  };
 
   const months = [
     "Janeiro",
@@ -190,7 +171,7 @@ function MainTable() {
       ) : (
         <div>
           Erro: nenhum movimento encontrado
-          <div onClick={() => getResponse()}>Recarregar</div>
+          <div onClick={reload}>Recarregar</div>
         </div>
       )}
     </Container>

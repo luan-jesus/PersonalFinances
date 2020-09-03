@@ -8,17 +8,21 @@ export const Container = styled.div`
 `;
 
 export const Title = styled.div`
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 0;
   color: #7c7c7c;
   font-style: italic;
+  z-index: 0;
 `;
 
 export const BoxContainer = styled.div`
-  margin: 20px;
+  margin: 25px;
   padding: 20px;
   box-shadow: 10px 10px 20px -10px rgba(0, 0, 0, 0.5);
   background-color: #fff;
+  position: relative;
 `;
 
 export const Column = styled.div`

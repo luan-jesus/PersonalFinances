@@ -11,6 +11,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   color: #000;
+  z-index: 1;
 `;
 
 export const LeftButton = styled.div`
