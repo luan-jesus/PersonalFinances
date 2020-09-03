@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  width: 1280px;
+  min-width: 1020px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
 `;
@@ -31,7 +32,7 @@ export const Month = styled.div`
 export const MonthName = styled.div`
   flex: 1;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   padding: 1.5px 0;
 `;
@@ -65,7 +66,7 @@ export const Category = styled.div`
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   width: 50%;
-  font-size: 17px;
+  font-size: 14px;
   display: flex;
   align-items: center;
   padding-left: 10px;

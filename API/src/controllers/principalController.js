@@ -115,6 +115,8 @@ router.post("/dashboard", async (req, res) => {
       }
     );
 
+    await sleep(2000);
+
     res.status(200).json({
       totalAnual: {
         entradas: entradaTotalAnual[0]["sum"] || "0",
@@ -131,15 +133,15 @@ router.post("/dashboard", async (req, res) => {
       },
       movimentos: [
         {
-          tipoMovimento: "entrada",
+          tipoMovimento: "Entrada",
           categorias: categoriasEntrada,
         },
         {
-          tipoMovimento: "investimento",
+          tipoMovimento: "Investimento",
           categorias: categoriasInvestimento,
         },
         {
-          tipoMovimento: "saída",
+          tipoMovimento: "Saída",
           categorias: categoriasSaida,
         },
       ],
@@ -227,3 +229,9 @@ const formatarCategoria = async (categoriaEntradas, ano) => {
 
   return categorias;
 };
+
+function sleep(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}

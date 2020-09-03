@@ -1,13 +1,13 @@
 {
     "totalAnual": {
-        "entradas": "4275",
-        "investimentos": "2000",
-        "saidas": "2164.35",
-        "saldo": "110.65"
+        "entradas": "5115",
+        "investimentos": "2500",
+        "saidas": "2225.33",
+        "saldo": "389.67"
     },
     "movimentos": [
         {
-            "tipoMovimento": "Entradas",
+            "tipoMovimento": "entrada",
             "categorias": [
                 {
                     "categoria": "Receitas",
@@ -20,7 +20,7 @@
                         "0",
                         "0",
                         "2843",
-                        "1432",
+                        "2272",
                         "0",
                         "0",
                         "0",
@@ -38,7 +38,7 @@
                                 "0",
                                 "0",
                                 "743",
-                                "603",
+                                "1443",
                                 "0",
                                 "0",
                                 "0",
@@ -86,7 +86,7 @@
             ]
         },
         {
-            "tipoMovimento": "Investimentos",
+            "tipoMovimento": "investimento",
             "categorias": [
                 {
                     "categoria": "Investimentos",
@@ -99,7 +99,7 @@
                         "0",
                         "0",
                         "1000",
-                        "1000",
+                        "1500",
                         "0",
                         "0",
                         "0",
@@ -117,7 +117,7 @@
                                 "0",
                                 "0",
                                 "1000",
-                                "1000",
+                                "1500",
                                 "0",
                                 "0",
                                 "0",
@@ -129,7 +129,7 @@
             ]
         },
         {
-            "tipoMovimento": "Saídas",
+            "tipoMovimento": "saída",
             "categorias": [
                 {
                     "categoria": "Fixas",
@@ -380,7 +380,7 @@
                         "0",
                         "0",
                         "1331.02",
-                        "90",
+                        "150.98",
                         "0",
                         "0",
                         "0",
@@ -398,7 +398,7 @@
                                 "0",
                                 "0",
                                 "717.12",
-                                "0",
+                                "36.8",
                                 "0",
                                 "0",
                                 "0",

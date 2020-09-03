@@ -1,9 +1,7 @@
-import React from 'react';
-import {
-  FaBars
-} from "react-icons/fa";
+import React from "react";
+import { FaBars } from "react-icons/fa";
 
-import { Container, LeftButton, RouteName } from './styles';
+import { Container, LeftButton, RouteName } from "./styles";
 
 function Header() {
   return (
