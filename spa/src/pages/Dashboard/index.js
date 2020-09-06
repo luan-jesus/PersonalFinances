@@ -6,27 +6,33 @@ import { Container, Title, BoxContainer, Column, Row } from "./styles";
 import MainTable from "../../components/MainTable";
 import TotalYearTable from "../../components/TotalYearTable";
 import YearSelector from "../../components/YearSelector";
+import TotalMonthPieChart from "../../components/TotalMonthPieChart";
 
 function Dashboard() {
   const [year, setYear] = useState(new Date().getFullYear());
-  const [month, setMonth] = useState(0);
+  const [month, setMonth] = useState(new Date().getMonth());
   const [movimentos, setMovimentos] = useState([]);
   const [totalAnual, setTotalAnual] = useState([]);
+  const [totalMonthly, setTotalMonthly] = useState([]);
   const responseJSON = require("../../response.json");
 
   useEffect(() => {
-    // getResponse();
-    setMovimentos(responseJSON.movimentos);
-    setTotalAnual(responseJSON.totalAnual)
-    console.log()
+    getResponse();
+    // console.log()
   }, []);
 
   const getResponse = async () => {
     // alert("get response");
     await api.post("/dashboard", { ano: 2020 }).then((response) => {
-      console.log(response.data);
+      // console.log(response.data);
       setMovimentos(response.data.movimentos);
+      setTotalAnual(response.data.totalAnual);
+      // setTotalMonthly(response.data.totalMensal);
     });
+
+    // setMovimentos(responseJSON.movimentos);
+    // setTotalAnual(responseJSON.totalAnual);
+    setTotalMonthly(responseJSON.totalMensal);
   };
 
   const months = [
@@ -80,11 +86,10 @@ function Dashboard() {
                 }
               }}
             />
-            <div style={{ width: 200, height: 200 }}></div>
+            <TotalMonthPieChart totalMonthly={totalMonthly} month={month} />
           </BoxContainer>
         </Column>
       </Row>
-
     </Container>
   );
 }

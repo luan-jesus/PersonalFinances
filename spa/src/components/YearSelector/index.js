@@ -1,7 +1,7 @@
 import React from "react";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
 
-import { Container, Arrow, Input, Title, YearContainer } from "./styles";
+import { Container, Arrow, Input, YearContainer } from "./styles";
 
 function YearSelector({ value, onClickLeft = () => {}, onClickRight = () => {} }) {
   return (
@@ -10,7 +10,7 @@ function YearSelector({ value, onClickLeft = () => {}, onClickRight = () => {} }
         <Arrow onClick={onClickLeft}>
           <FaCaretLeft color="#fff" />
         </Arrow>
-        <Input type="text" value={value} />
+        <Input type="text" value={value} readOnly={true} />
         <Arrow onClick={onClickRight}>
           <FaCaretRight color="#fff" />
         </Arrow>

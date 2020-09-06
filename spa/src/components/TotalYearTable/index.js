@@ -8,16 +8,14 @@ import {
   RightContainer,
   MonthName,
   ValorLabel,
-  TypeMov,
   Category,
   CategoryContainer,
   Hr,
-  MonthValue,
   Total,
 } from "./styles";
 
 function TotalYearTable({ totalAnual }) {
-  console.log(totalAnual);
+  // console.log(totalAnual);
   return (
     <Container>
       <Row>

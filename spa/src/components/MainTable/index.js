@@ -129,9 +129,9 @@ function MainTable({movimentos, reload = () => {}}) {
                         <CategoryContainer style={{ flexDirection: "column" }}>
                           {subcategorias.map((subcategoria) => {
                             return (
-                              <Row>
+                              <Row key={Math.random()}>
                                 {subcategoria.total.map((total) => (
-                                  <MonthValue key={Math.random()}>
+                                  <MonthValue style={{color: total !== '0' ? '#8e8e8e' : '#fff'}} key={Math.random()}>
                                     R${" "}
                                     {parseFloat(total)
                                       .toFixed(2)

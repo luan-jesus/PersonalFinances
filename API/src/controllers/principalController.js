@@ -115,22 +115,53 @@ router.post("/dashboard", async (req, res) => {
       }
     );
 
-    await sleep(2000);
+    const totalMensalSql = `
+      select extract(month from data) as mes, tipos_mov.nome, sum(valor) as valor, "Colors"."color" from movimentacao
+      join tipos_mov on "movimentacao"."tipo_movId" = "tipos_mov"."id"
+      join "Colors" on "Colors"."tabRef" = 'tipos_mov' and "tipos_mov"."id" = "Colors"."regId"
+      where extract(year from data) = ${ano}
+      group by extract(year from data), extract(month from data), tipos_mov.nome, "Colors"."color"
+    `;
+
+    const totalMensal = await sequelize.query(totalMensalSql, {
+      raw: true,
+      type: Sequelize.QueryTypes.SELECT,
+    });
+
+    const totalMensalFormatado = await formatarTotalMensal(totalMensal);
+
+    // // Remover
+    // console.log("Sleep pra simular tempo resposta da api. REMOVER PLZ");
+    // await sleep(2000);
+    // // Remover
 
     res.status(200).json({
-      totalAnual: {
-        entradas: entradaTotalAnual[0]["sum"] || "0",
-        investimentos: investimentoTotalAnual[0]["sum"] || "0",
-        saidas: saidaTotalAnual[0]["sum"] || "0",
-        saldo: (
-          Math.floor(
-            (parseFloat(entradaTotalAnual[0]["sum"] || "0") -
-              parseFloat(investimentoTotalAnual[0]["sum"] || "0") -
-              parseFloat(saidaTotalAnual[0]["sum"] || "0")) *
-              100
-          ) / 100
-        ).toString(),
-      },
+      totalAnual: [
+        {
+          nome: "Entradas",
+          valor: entradaTotalAnual[0]["sum"] || "0",
+        },
+        {
+          nome: "Investimentos",
+          valor: investimentoTotalAnual[0]["sum"] || "0",
+        },
+        {
+          nome: "Saídas",
+          valor: saidaTotalAnual[0]["sum"] || "0",
+        },
+        {
+          nome: "Saldo",
+          valor: (
+            Math.floor(
+              (parseFloat(entradaTotalAnual[0]["sum"] || "0") -
+                parseFloat(investimentoTotalAnual[0]["sum"] || "0") -
+                parseFloat(saidaTotalAnual[0]["sum"] || "0")) *
+                100
+            ) / 100
+          ).toString(),
+        },
+      ],
+      totalMensal: totalMensalFormatado,
       movimentos: [
         {
           tipoMovimento: "Entrada",
@@ -152,6 +183,25 @@ router.post("/dashboard", async (req, res) => {
 });
 
 module.exports = router;
+
+const formatarTotalMensal = async (totalMensal) => {
+  let meses = [];
+
+  for (i = 0; i < 12; i++) {
+    meses[i] = [];
+    totalMensal.map((mes) => {
+      if (mes.mes === i) {
+        meses[i].push({
+          title: mes.nome,
+          value: parseFloat(mes.valor),
+          color: mes.color
+        });
+      }
+    });
+  }
+
+  return meses;
+};
 
 const formatarCategoria = async (categoriaEntradas, ano) => {
   const categorias = [];
