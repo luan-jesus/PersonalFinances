@@ -1,18 +1,16 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 
 import Dashboard from "../pages/Dashboard";
-import Categoria from "../pages/Categoria";
+import NewMov from "../pages/NewMov";
 
 function Routes() {
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route path="/" exact={true} component={Dashboard} />
-        <Route path="/categoria" component={Categoria} />
-        <Redirect from="/" to="/" />
-      </Switch>
-    </BrowserRouter>
+    <Switch>
+      <Route path="/dashboard" exact={true} component={Dashboard}  />
+      <Route path="/nova-movimentacao" component={NewMov} />
+      <Redirect from="/" to="/dashboard" />
+    </Switch>
   );
 }
 

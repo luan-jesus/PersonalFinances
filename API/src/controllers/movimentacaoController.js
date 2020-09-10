@@ -24,6 +24,26 @@ router.get("/:subcategoriaId", async (req, res) => {
   }
 });
 
+/** 10 ultimas movimentações **/
+router.get("/top/:number", async (req, res) => {
+  const { number } = req.params;
+
+  try {
+    const movimentos = await movimentacao.findAll({
+      attributes: ['desc', 'valor', 'data', 'tipo_movId'],
+      limit: number,
+      order: [['id', 'desc']],
+      include: {
+        model: subcategoria,
+        attributes: ["nome"]
+      }
+    });
+    res.status(200).send(movimentos);
+  } catch (error) {
+    res.status(500).json({ error: error.toString() });
+  }
+});
+
 /*
  * POST
  */
@@ -34,12 +54,9 @@ router.post("/", async (req, res) => {
 
   if (!subcategoriaId)
     return res.status(400).send({ error: "SubcategoriaId é obrigatório" });
-  if (!desc)
-    return res.status(400).send({ error: "Desc é obrigatório" });
-  if (!valor)
-    return res.status(400).send({ error: "Valor é obrigatório" });
-  if (!data)
-    return res.status(400).send({ error: "Data é obrigatória" });
+  if (!desc) return res.status(400).send({ error: "Desc é obrigatório" });
+  if (!valor) return res.status(400).send({ error: "Valor é obrigatório" });
+  if (!data) return res.status(400).send({ error: "Data é obrigatória" });
   if (!tipo_movId)
     return res.status(400).send({ error: "Tipo_movId é obrigatório" });
 
@@ -78,8 +95,7 @@ router.post("/", async (req, res) => {
 router.put("/", async (req, res) => {
   const { id, subcategoriaId, desc, valor, data, tipo_movId } = req.body;
 
-  if (!id)
-    return res.status(400).send({ error: "Id é obrigatório" });
+  if (!id) return res.status(400).send({ error: "Id é obrigatório" });
 
   try {
     const movimentacaoUpdate = await movimentacao.findOne({
@@ -106,7 +122,9 @@ router.put("/", async (req, res) => {
     if (!novaTipoMov)
       return res
         .status(400)
-        .send({ error: `Tipo de movimentação de id=${tipo_movId} inexistente` });
+        .send({
+          error: `Tipo de movimentação de id=${tipo_movId} inexistente`,
+        });
 
     let movimentacaoAtualizada = movimentacaoUpdate.dataValues;
 

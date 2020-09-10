@@ -1,4 +1,5 @@
-import React, { useState }  from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaClipboardList,
   FaPlus,
@@ -17,41 +18,56 @@ import {
 } from "react-pro-sidebar";
 import "./style.scss";
 
-const Sidebar = () => {
-  const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
+const Sidebar = ({ sidebarCollapsed }) => {
+  // const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
   return (
-    <ProSidebar
-      collapsed={sideBarCollapsed}
-    >
+    <ProSidebar collapsed={sidebarCollapsed}>
       <SidebarHeader>
-        <div
-          onClick={() => setSideBarCollapsed(!sideBarCollapsed)}
-          style={{
-            padding: "24px",
-            textTransform: "uppercase",
-            fontWeight: "bold",
-            fontSize: 16,
-            letterSpacing: "1px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-            color: '#fff'
-          }}
-        >
-          Teixeira Finanças
-        </div>
+          <div
+            // onClick={() => setSideBarCollapsed(!sideBarCollapsed)}
+            style={{
+              padding: "24px",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              fontSize: 16,
+              letterSpacing: "1px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+              textDecoration: 'none',
+              color: "#fff",
+            }}
+          >
+            TX Finanças
+          </div>
       </SidebarHeader>
       <SidebarContent>
         <Menu iconShape="square">
-          <MenuItem style={{color: '#fff'}} icon={<FaClipboardList />}>Dashboard</MenuItem>
-          <MenuItem style={{color: '#fff'}} icon={<FaPlus />}> Nova movimentação</MenuItem>
-          <SubMenu style={{color: '#fff'}} icon={<FaTag />} title="Categorias">
-            <MenuItem style={{color: '#fff'}}>Cadastrar</MenuItem>
-            <MenuItem style={{color: '#fff'}}>Ver todas</MenuItem>
+          <MenuItem style={{ color: "#fff" }} icon={<FaClipboardList />}>
+            <Link style={{ color: "#fff" }} to="/dashboard">
+              Dashboard
+            </Link>
+          </MenuItem>
+          <MenuItem style={{ color: "#fff" }} icon={<FaPlus />}>
+            <Link style={{ color: "#fff" }} to="/nova-movimentacao">
+              Nova movimentação
+            </Link>
+          </MenuItem>
+          <SubMenu
+            style={{ color: "#fff" }}
+            icon={<FaTag />}
+            title="Categorias"
+          >
+            <MenuItem style={{ color: "#fff" }}>Cadastrar</MenuItem>
+            <MenuItem style={{ color: "#fff" }}>Ver todas</MenuItem>
           </SubMenu>
-          <SubMenu style={{color: '#fff'}} icon={<FaTags />} title="Subcategorias">
-            <MenuItem style={{color: '#fff'}}>Cadastrar</MenuItem>
-            <MenuItem style={{color: '#fff'}}>Ver todas</MenuItem>
+          <SubMenu
+            style={{ color: "#fff" }}
+            icon={<FaTags />}
+            title="Subcategorias"
+          >
+            <MenuItem style={{ color: "#fff" }}>Cadastrar</MenuItem>
+            <MenuItem style={{ color: "#fff" }}>Ver todas</MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>

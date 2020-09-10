@@ -2,7 +2,7 @@
 const express = require("express");
 
 /** Internal Modules **/
-const { categoria } = require("../models");
+const { categoria, subcategoria } = require("../models");
 
 const router = express.Router();
 
@@ -29,6 +29,20 @@ router.get("/:categoriaId", async (req, res) => {
       where: { id: categoriaId },
     });
     return res.status(200).send(categoriaToReturn);
+  } catch (error) {
+    return res.status(500).json({ error: error.toString() });
+  }
+});
+
+/** Selecionar todas subcategorias por categoria **/
+router.get("/subcategorias/:categoriaId", async (req, res) => {
+  const { categoriaId } = req.params;
+
+  try {
+    const subcategoriaToReturn = await subcategoria.findAll({
+      where: { categoriaId: categoriaId },
+    });
+    return res.status(200).send(subcategoriaToReturn);
   } catch (error) {
     return res.status(500).json({ error: error.toString() });
   }
