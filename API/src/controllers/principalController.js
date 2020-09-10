@@ -190,15 +190,41 @@ const formatarTotalMensal = async (totalMensal) => {
   for (i = 0; i < 12; i++) {
     meses[i] = [];
     totalMensal.map((mes) => {
-      if (mes.mes === i) {
+      if (mes.mes - 1 === i) {
         meses[i].push({
           title: mes.nome,
           value: parseFloat(mes.valor),
-          color: mes.color
+          color: mes.color,
         });
       }
     });
   }
+
+  meses = meses.map((mes) => {
+    let valorEntrada = 0;
+    let valorSaida = 0;
+    let valorInvestimento = 0;
+
+    mes.map((mov) => {
+      if (mov.title === "Entrada") {
+        valorEntrada += mov.value;
+      }
+      if (mov.title === "Saída") {
+        valorSaida += mov.value;
+      }
+      if (mov.title === "Investimento") {
+        valorInvestimento += mov.value;
+      }
+    });
+
+    return mes.map((mov) => {
+      if (mov.title === "Entrada") {
+        mov.title = "Saldo";
+        mov.value = valorEntrada - (valorSaida + valorInvestimento);
+      }
+      return mov;
+    });
+  });
 
   return meses;
 };

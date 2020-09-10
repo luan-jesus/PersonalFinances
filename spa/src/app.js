@@ -11,7 +11,7 @@ const options = {
   timeout: 10000,
   
   // you can also just use 'scale'
-  transition: transitions.SCALE
+  transition: transitions.FADE
 }
 
 const App = () => {

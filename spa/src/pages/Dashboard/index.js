@@ -18,7 +18,7 @@ function Dashboard() {
   const [totalAnual, setTotalAnual] = useState([]);
   const [totalMonthly, setTotalMonthly] = useState([]);
   const [loading, setLoading] = useState(true);
-  const responseJSON = require("../../response.json");
+  // const responseJSON = require("../../response.json");
 
   const alert = useAlert();
 
@@ -35,6 +35,7 @@ function Dashboard() {
         // console.log(response.data);
         setMovimentos(response.data.movimentos);
         setTotalAnual(response.data.totalAnual);
+        setTotalMonthly(response.data.totalMensal);
 
         setLoading(false);
         // setTotalMonthly(response.data.totalMensal);
@@ -47,7 +48,7 @@ function Dashboard() {
 
     // setMovimentos(responseJSON.movimentos);
     // setTotalAnual(responseJSON.totalAnual);
-    setTotalMonthly(responseJSON.totalMensal);
+    // setTotalMonthly(responseJSON.totalMensal);
   };
 
   const months = [
