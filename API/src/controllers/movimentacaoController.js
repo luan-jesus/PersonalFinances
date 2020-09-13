@@ -11,7 +11,7 @@ const router = express.Router();
  */
 
 /** Selecionar todas movimentações por subcategoria **/
-router.get("/:subcategoriaId", async (req, res) => {
+router.get("/subcategoria/:subcategoriaId", async (req, res) => {
   const { subcategoriaId } = req.params;
 
   try {
@@ -25,18 +25,34 @@ router.get("/:subcategoriaId", async (req, res) => {
 });
 
 /** 10 ultimas movimentações **/
-router.get("/top/:number", async (req, res) => {
-  const { number } = req.params;
+router.get("/items=:items/offset=:offset/filter=:filter", async (req, res) => {
+  const { items, offset, filter } = req.params;
+  console.log(filter)
+
+  if (parseInt(items) < 0){
+    return res.status(400).json({ error: "Items não pode ser menor que 0" });
+  }
+
+  if (parseInt(offset) < 0){
+    return res.status(400).json({ error: "Offset não pode ser menor que 0" });
+  }
 
   try {
-    const movimentos = await movimentacao.findAll({
-      attributes: ['desc', 'valor', 'data', 'tipo_movId'],
-      limit: number,
+    const movimentos = await movimentacao.findAndCountAll({
+      attributes: ['id', 'desc', 'valor', 'data', 'tipo_movId'],
+      limit: parseInt(items),
+      offset: parseInt(items) * parseInt(offset),
       order: [['id', 'desc']],
-      include: {
-        model: subcategoria,
-        attributes: ["nome"]
-      }
+      include: [
+        {
+          model: subcategoria,
+          attributes: ["nome"]
+        },
+        {
+          model: tipos_mov,
+          attributes: ['nome']
+        }
+      ]
     });
     res.status(200).send(movimentos);
   } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAlert } from "react-alert";
+import { FaSortDown, FaSortUp, FaSearch, FaRedo, FaBan } from "react-icons/fa";
 
 import api from "../../services/api";
 
@@ -9,12 +10,30 @@ import DatePickerInput from "../../components/DatePickerInput";
 import ButtonInput from "../../components/ButtonInput";
 import Loading from "../../components/Loading";
 
-import { Container, BoxContainer, Title, Table, THead, Tr, Td } from "./styles";
+import {
+  Container,
+  BoxContainer,
+  Title,
+  Table,
+  THead,
+  TBody,
+  Tr,
+  Td,
+  TableContainer,
+  SearchBox,
+  SearchInput,
+  SearchSubmit,
+  TableFooter,
+  TableFooterMessages,
+  TableFooterLoadMore,
+  ClearFilter,
+} from "./styles";
 
 function NewMov() {
   const [categorias, setCategorias] = useState([]);
   const [subcategorias, setSubcategorias] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState("");
   const [movimento, setMovimento] = useState({
     tipo_movId: 2,
     data: new Date(),
@@ -22,6 +41,9 @@ function NewMov() {
     desc: "",
     subcategoriaId: 0,
   });
+  const [movimentos, setMovimentos] = useState([]);
+  const [movementsOffset, setMovementsOffset] = useState(0);
+  const [movementsNumber, setMovementsNumber] = useState(0);
 
   const alert = useAlert();
 
@@ -42,7 +64,48 @@ function NewMov() {
 
   useEffect(() => {
     getAllCategories();
+    getAllMovements();
   }, []);
+
+  const getAllMovements = async (idCall) => {
+    console.log(
+      "/movimentacao/items=15/offset=" +
+        movementsOffset +
+        "/filter=" +
+        (filter || "nothing")
+    );
+    setLoading(true);
+    await api
+      .get(
+        "/movimentacao/items=15/offset=" +
+          movementsOffset +
+          "/filter=" +
+          (filter || "nothing")
+      )
+      .then((response) => {
+        if (response.data.rows.length > 0) {
+          if (!idCall) {
+
+            setMovimentos([...movimentos, ...response.data.rows]);
+
+            setMovementsOffset(movementsOffset + 1);
+
+            if (movementsNumber + 15 < response.data.count) {
+              setMovementsNumber(movementsNumber + 15);
+            } else {
+              setMovementsNumber(response.data.count);
+            }
+          } else {
+            setMovimentos(response.data.rows);
+          }
+        }
+      })
+      .catch((err) => {
+        alert.error(err.message);
+      });
+
+    setLoading(false);
+  };
 
   const getAllCategories = async () => {
     await api
@@ -178,40 +241,73 @@ function NewMov() {
         />
         <ButtonInput onClick={sendRequest} />
       </BoxContainer>
-      <BoxContainer>
+      <BoxContainer style={{ marginLeft: 0 }}>
         <Title>Ultimas movimentações</Title>
-        <Table cellSpacing={0}>
-          <THead>
+        <SearchBox>
+          <SearchInput
+            name="search"
+            type="text"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+          <SearchSubmit onClick={() => getAllMovements(1323)}>
+            <FaSearch color="#3D3D3D" size={22} />
+          </SearchSubmit>
+        </SearchBox>
+        <ClearFilter>
+          <FaBan />
+          {" "}Limpar filtros e ordenação
+        </ClearFilter>
+        <TableContainer>
+          <Table cellSpacing={0}>
+            <THead>
+              <Tr>
+                <Td style={{ width: "40%" }}>
+                  Nome
+                  <FaSortDown />
+                </Td>
+                <Td style={{ width: "15%" }}>Subcategoria</Td>
+                <Td style={{ width: "15%" }}>Valor</Td>
+                <Td style={{ width: "15%" }}>Data</Td>
+                <Td style={{ width: "15%" }}>Tipo Movimento</Td>
+              </Tr>
+            </THead>
             <Tr>
-              <Td>Nome</Td>
-              <Td>Subcategoria</Td>
-              <Td>Valor</Td>
-              <Td>Data</Td>
-              <Td>Tipo Movimento</Td>
+              <Td></Td>
             </Tr>
-          </THead>
-          <Tr>
-            <Td>Zézinho</Td>
-            <Td>subcategman</Td>
-            <Td>R$ 12,34</Td>
-            <Td>12/12/2020</Td>
-            <Td>Entrada</Td>
-          </Tr>
-          <Tr>
-            <Td>Zézinho</Td>
-            <Td>subcategman</Td>
-            <Td>R$ 12,34</Td>
-            <Td>12/12/2020</Td>
-            <Td>Entrada</Td>
-          </Tr>
-          <Tr>
-            <Td>Zézinho</Td>
-            <Td>subcategman</Td>
-            <Td>R$ 12,34</Td>
-            <Td>12/12/2020</Td>
-            <Td>Entrada</Td>
-          </Tr>
-        </Table>
+            <TBody>
+              {movimentos?.map((mov) => {
+                const x = new Date(mov.data)
+                  .toLocaleString("pt-BR")
+                  .split(" ")[0];
+                const [day, month, year] = x.split(/-/g);
+                return (
+                  <Tr key={mov.id}>
+                    <Td style={{ width: "40%" }}>{mov.desc}</Td>
+                    <Td style={{ width: "15%" }}>{mov.subcategoria?.nome}</Td>
+                    <Td style={{ width: "15%" }}>
+                      R${" "}
+                      {parseFloat(mov.valor)
+                        .toFixed(2)
+                        .toString()
+                        .replace(/\./g, ",")}
+                    </Td>
+                    {/* <Td>{`${day}/${month}/${year}`}</Td> */}
+                    <Td style={{ width: "15%" }}>{x}</Td>
+                    <Td style={{ width: "15%" }}>{mov.tipos_mov?.nome}</Td>
+                  </Tr>
+                );
+              })}
+            </TBody>
+          </Table>
+        </TableContainer>
+        <TableFooter>
+          <TableFooterMessages>{movementsNumber} registros</TableFooterMessages>
+          <TableFooterLoadMore onClick={getAllMovements}>
+            Carregar mais {" "}
+            <FaRedo />
+          </TableFooterLoadMore>
+        </TableFooter>
       </BoxContainer>
     </Container>
   );
