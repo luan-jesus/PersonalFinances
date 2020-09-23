@@ -4,7 +4,6 @@ export const Container = styled.div`
   display: inline-block;
   flex-direction: column;
   width: 100%;
-  max-width: 1400px;
 `;
 
 export const Title = styled.div`

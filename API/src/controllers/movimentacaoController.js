@@ -3,6 +3,8 @@ const express = require("express");
 
 /** Internal Modules **/
 const { movimentacao, subcategoria, tipos_mov } = require("../models");
+const { Op } = require("../models").Sequelize;
+const sequelize = require("../models").sequelize;
 
 const router = express.Router();
 
@@ -27,32 +29,49 @@ router.get("/subcategoria/:subcategoriaId", async (req, res) => {
 /** 10 ultimas movimentações **/
 router.get("/items=:items/offset=:offset/filter=:filter", async (req, res) => {
   const { items, offset, filter } = req.params;
-  console.log(filter)
+  console.log(filter);
 
-  if (parseInt(items) < 0){
+  var where = {};
+
+  if (filter !== "nothing") {
+    where = {
+      where: [
+        {
+          desc: {
+            [Op.like]: `%${filter}%`,
+          },
+        },
+      ],
+    };
+  }
+
+  console.log(where);
+
+  if (parseInt(items) < 0) {
     return res.status(400).json({ error: "Items não pode ser menor que 0" });
   }
 
-  if (parseInt(offset) < 0){
+  if (parseInt(offset) < 0) {
     return res.status(400).json({ error: "Offset não pode ser menor que 0" });
   }
 
   try {
     const movimentos = await movimentacao.findAndCountAll({
-      attributes: ['id', 'desc', 'valor', 'data', 'tipo_movId'],
+      attributes: ["id", "desc", "valor", "data", "tipo_movId"],
       limit: parseInt(items),
       offset: parseInt(items) * parseInt(offset),
-      order: [['id', 'desc']],
+      order: [["id", "desc"]],
       include: [
         {
           model: subcategoria,
-          attributes: ["nome"]
+          attributes: ["nome"],
         },
         {
           model: tipos_mov,
-          attributes: ['nome']
-        }
-      ]
+          attributes: ["nome"],
+        },
+      ],
+      ...where,
     });
     res.status(200).send(movimentos);
   } catch (error) {
@@ -136,11 +155,9 @@ router.put("/", async (req, res) => {
         .send({ error: `Subcategoria de id=${subcategoriaId} inexistente` });
 
     if (!novaTipoMov)
-      return res
-        .status(400)
-        .send({
-          error: `Tipo de movimentação de id=${tipo_movId} inexistente`,
-        });
+      return res.status(400).send({
+        error: `Tipo de movimentação de id=${tipo_movId} inexistente`,
+      });
 
     let movimentacaoAtualizada = movimentacaoUpdate.dataValues;
 

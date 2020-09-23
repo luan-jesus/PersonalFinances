@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAlert } from "react-alert";
-import { FaSortDown, FaSortUp, FaSearch, FaRedo, FaBan } from "react-icons/fa";
+import {
+  FaSortDown,
+  FaSearch,
+  FaBan,
+  FaAngleRight,
+  FaAngleLeft,
+} from "react-icons/fa";
 
 import api from "../../services/api";
 
@@ -9,6 +15,7 @@ import ComboBoxInput from "../../components/ComboBoxInput";
 import DatePickerInput from "../../components/DatePickerInput";
 import ButtonInput from "../../components/ButtonInput";
 import Loading from "../../components/Loading";
+import ErrorScreen from "../../components/ErrorScreen";
 
 import {
   Container,
@@ -25,7 +32,9 @@ import {
   SearchSubmit,
   TableFooter,
   TableFooterMessages,
-  TableFooterLoadMore,
+  TableFooterPagination,
+  TableFooterPaginationIcon,
+  TableFooterPaginationInput,
   ClearFilter,
 } from "./styles";
 
@@ -42,10 +51,21 @@ function NewMov() {
     subcategoriaId: 0,
   });
   const [movimentos, setMovimentos] = useState([]);
-  const [movementsOffset, setMovementsOffset] = useState(0);
-  const [movementsNumber, setMovementsNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPageNumber, setTotalPageNumber] = useState(1);
+  const [totalMovement, setTotalMovements] = useState(0);
+  const [error, setError] = useState({
+    show: false,
+    status: 0,
+    title: "",
+    message: "",
+  });
 
   const alert = useAlert();
+
+  useEffect(() => {
+    getAllMovements();
+  }, [pageNumber]);
 
   const tiposMov = [
     {
@@ -67,10 +87,10 @@ function NewMov() {
     getAllMovements();
   }, []);
 
-  const getAllMovements = async (idCall) => {
+  const getAllMovements = async () => {
     console.log(
       "/movimentacao/items=15/offset=" +
-        movementsOffset +
+        (pageNumber - 1) +
         "/filter=" +
         (filter || "nothing")
     );
@@ -78,30 +98,30 @@ function NewMov() {
     await api
       .get(
         "/movimentacao/items=15/offset=" +
-          movementsOffset +
+          (pageNumber - 1) +
           "/filter=" +
           (filter || "nothing")
       )
       .then((response) => {
-        if (response.data.rows.length > 0) {
-          if (!idCall) {
+        setMovimentos(response.data.rows);
+        setTotalMovements(response.data.count);
 
-            setMovimentos([...movimentos, ...response.data.rows]);
+        const totalPagesBroken = response.data.count / 15;
+        const [number, decimal] = totalPagesBroken.toString().split(".");
 
-            setMovementsOffset(movementsOffset + 1);
-
-            if (movementsNumber + 15 < response.data.count) {
-              setMovementsNumber(movementsNumber + 15);
-            } else {
-              setMovementsNumber(response.data.count);
-            }
-          } else {
-            setMovimentos(response.data.rows);
-          }
+        if (decimal) {
+          setTotalPageNumber(parseInt(number) + 1);
+        } else {
+          setTotalPageNumber(number);
         }
       })
       .catch((err) => {
-        alert.error(err.message);
+        setError({
+          show: true,
+          status: err?.response?.status,
+          title: 'Something went wrong!',
+          message: err.message
+        })
       });
 
     setLoading(false);
@@ -114,7 +134,12 @@ function NewMov() {
         setCategorias(response.data);
       })
       .catch((err) => {
-        alert.error(err.message);
+        setError({
+          show: true,
+          status: err?.response?.status,
+          title: 'Something went wrong!',
+          message: err.message
+        })
       });
 
     await api
@@ -130,7 +155,12 @@ function NewMov() {
         setLoading(false);
       })
       .catch((err) => {
-        alert.error(err.message);
+        setError({
+          show: true,
+          status: err?.response?.status,
+          title: 'Something went wrong!',
+          message: err.message
+        })
       });
   };
 
@@ -151,7 +181,12 @@ function NewMov() {
         setLoading(false);
       })
       .catch((err) => {
-        alert.error(err.message);
+        setError({
+          show: true,
+          status: err?.response?.status,
+          title: 'Something went wrong!',
+          message: err.message
+        })
       });
   };
 
@@ -170,18 +205,34 @@ function NewMov() {
         });
         alert.success("Sucesso");
         setLoading(false);
+        getAllMovements();
       })
       .catch((err) => {
         if (err.response) {
           // Response status !== 2xx
-          alert.error(err.response.data.error);
+          setError({
+            show: true,
+            status: err?.response?.status,
+            title: 'Something went wrong!',
+            message: err.response.data.error
+          })
           setLoading(false);
         } else if (err.request) {
-          alert.error(err.message);
+          setError({
+            show: true,
+            status: err?.response?.status,
+            title: 'Something went wrong!',
+            message: err.message
+          })
           setLoading(false);
         } else {
           // Failed to call api
-          alert.error(err.message);
+          setError({
+            show: true,
+            status: err?.response?.status,
+            title: 'Something went wrong!',
+            message: err.message
+          })
           setLoading(false);
         }
       });
@@ -189,7 +240,12 @@ function NewMov() {
 
   return (
     <Container>
+      {error.show ? (
+        <ErrorScreen status={error.status} title={error.title} message={error.message} />
+      ) : (
+        <>
       <Loading isLoading={loading} />
+      <div>
       <BoxContainer>
         <Title>Cadastrar nova movimentação</Title>
         <ComboBoxInput
@@ -241,6 +297,7 @@ function NewMov() {
         />
         <ButtonInput onClick={sendRequest} />
       </BoxContainer>
+      </div>
       <BoxContainer style={{ marginLeft: 0 }}>
         <Title>Ultimas movimentações</Title>
         <SearchBox>
@@ -251,7 +308,7 @@ function NewMov() {
             onChange={(e) => setFilter(e.target.value)}
           />
           <SearchSubmit onClick={() => getAllMovements(1323)}>
-            <FaSearch color="#3D3D3D" size={22} />
+            <FaSearch color="#fff" size={14} />
           </SearchSubmit>
         </SearchBox>
         <ClearFilter>
@@ -272,15 +329,21 @@ function NewMov() {
                 <Td style={{ width: "15%" }}>Tipo Movimento</Td>
               </Tr>
             </THead>
-            <Tr>
-              <Td></Td>
-            </Tr>
             <TBody>
+              <Tr>
+                <Td
+                  style={{
+                    borderBottom: "1px solid #c4c4c4",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    padding: 3,
+                  }}
+                ></Td>
+              </Tr>
               {movimentos?.map((mov) => {
-                const x = new Date(mov.data)
+                const date = new Date(mov.data)
                   .toLocaleString("pt-BR")
                   .split(" ")[0];
-                const [day, month, year] = x.split(/-/g);
                 return (
                   <Tr key={mov.id}>
                     <Td style={{ width: "40%" }}>{mov.desc}</Td>
@@ -292,8 +355,7 @@ function NewMov() {
                         .toString()
                         .replace(/\./g, ",")}
                     </Td>
-                    {/* <Td>{`${day}/${month}/${year}`}</Td> */}
-                    <Td style={{ width: "15%" }}>{x}</Td>
+                    <Td style={{ width: "15%" }}>{date}</Td>
                     <Td style={{ width: "15%" }}>{mov.tipos_mov?.nome}</Td>
                   </Tr>
                 );
@@ -302,13 +364,40 @@ function NewMov() {
           </Table>
         </TableContainer>
         <TableFooter>
-          <TableFooterMessages>{movementsNumber} registros</TableFooterMessages>
-          <TableFooterLoadMore onClick={getAllMovements}>
-            Carregar mais {" "}
-            <FaRedo />
-          </TableFooterLoadMore>
+          <TableFooterMessages>
+            Total de registros: {totalMovement}
+          </TableFooterMessages>
+          <TableFooterPagination>
+            <TableFooterPaginationIcon
+              onClick={() => {
+                if (pageNumber - 1 > 0) {
+                  setPageNumber(pageNumber - 1);
+                }
+              }}
+            >
+              <FaAngleLeft />
+            </TableFooterPaginationIcon>
+            Página
+            <TableFooterPaginationInput
+              value={pageNumber}
+              onChange={(e) => setPageNumber(e.target.value)}
+            />
+            de {totalPageNumber}
+            <TableFooterPaginationIcon
+              onClick={() => {
+                console.log(pageNumber);
+                if (pageNumber + 1 <= totalPageNumber) {
+                  setPageNumber(parseInt(pageNumber || 0) + 1);
+                }
+              }}
+            >
+              <FaAngleRight />
+            </TableFooterPaginationIcon>
+          </TableFooterPagination>
         </TableFooter>
       </BoxContainer>
+      </>
+      )}
     </Container>
   );
 }

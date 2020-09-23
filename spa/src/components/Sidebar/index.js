@@ -50,7 +50,7 @@ const Sidebar = ({ sidebarCollapsed }) => {
           </MenuItem>
           <MenuItem style={{ color: "#fff" }} icon={<FaPlus />}>
             <Link style={{ color: "#fff" }} to="/nova-movimentacao">
-              Nova movimentação
+              Movimentação
             </Link>
           </MenuItem>
           <SubMenu

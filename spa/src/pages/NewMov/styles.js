@@ -47,7 +47,6 @@ export const Td = styled.td`
 `;
 
 export const THead = styled.thead`
-
   display: block;
 
   & > tr {
@@ -60,6 +59,7 @@ export const THead = styled.thead`
   & > tr > td {
     font-size: 13px;
     padding: 5px 5px;
+    width: 20%;
 
     &:hover {
       background-color: #000;
@@ -69,15 +69,11 @@ export const THead = styled.thead`
 `;
 
 export const TBody = styled.tbody`
-
   display: block;
-  max-height: 550px;
-  width: 100%;
-  overflow-x: hidden;
 
   & > tr {
-    /* display: table; */
     width: 100%;
+    display:table;
     &:hover {
       background-color: #f1f1f1;
       cursor: pointer;
@@ -85,8 +81,10 @@ export const TBody = styled.tbody`
   }
 
   & > tr > td {
+    width: 20%;
     padding: 6px 10px;
     border: 1px solid #c4c4c4;
+    border-top: none;
     font-size: 13px;
     text-align: left;
   }
@@ -107,16 +105,28 @@ export const SearchInput = styled.input`
   flex: 1;
   border: 1px solid #c4c4c4;
   padding: 5px;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 `;
 
 export const SearchSubmit = styled.div`
+  background-color: #3D3D3D;
+  padding: 0 30px;
 
-  padding: 2px;
-  margin-left: 10px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+
+  display: flex;
+  align-items: center;
+  height: 30px;
 
   &:hover {
     cursor: pointer;
+    background-color: #000;
+  }
+
+  &:focus {
+    outline: none;
   }
 `;
 
@@ -133,15 +143,31 @@ export const TableFooterMessages = styled.div`
 
 `;
 
-export const TableFooterLoadMore = styled.div`
+export const TableFooterPagination = styled.div`
   user-select: none;
   display: flex;
   align-items: center;
+`;
 
-  &:hover  {
+export const TableFooterPaginationIcon = styled.div`
+  padding: 2px;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  &:hover {
     cursor: pointer;
     color: #000;
   }
+`;
+
+export const TableFooterPaginationInput = styled.input`
+  width: 20px;
+  font-size: 12px;
+  margin: 0 5px;
+  flex: 1;
+  border: 1px solid #c4c4c4;
+  padding: 4px;
+  border-radius: 5px;
 `;
 
 export const ClearFilter = styled.div`

@@ -109,3 +109,62 @@ export const Total = styled.div`
 export const Hr = styled.div`
   height: 5px;
 `;
+
+
+export const Table = styled.table`
+  width: 100%;
+  font-size: 13px;
+  text-align: center;
+  border-collapse: collapse;
+  margin: 1px;
+`;
+
+export const Tr = styled.tr``;
+
+export const Td = styled.td`
+  height: 10px;
+`;
+
+export const THead = styled.thead`
+  display: block;
+
+  & > tr {
+    background-color: #3D3D3D;
+    color: #fff;
+    display: table;
+    width: 100%;
+  }
+
+  & > tr > td {
+    font-size: 13px;
+    padding: 5px 5px;
+    width: 50%;
+
+    &:hover {
+      background-color: #000;
+      cursor: pointer;
+    }
+  }
+`;
+
+export const TBody = styled.tbody`
+  display: block;
+
+  & > tr {
+    width: 100%;
+    display:table;
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  & > tr > td {
+    width: 50%;
+    padding: 6px 10px;
+    border: 1px solid #c4c4c4;
+    border-top: none;
+    font-size: 13px;
+    text-align: left;
+  }
+`;
